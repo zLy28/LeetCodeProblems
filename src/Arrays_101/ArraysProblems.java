@@ -9,6 +9,9 @@ import java.util.List;
 public class ArraysProblems {
     @Test
     public void test() {
+        int[] a = new int[]{0,1,2,2,3,0,4,2};
+        int i = removeElement(a, 2);
+        System.out.println(i);
 
     }
 
@@ -195,4 +198,139 @@ public class ArraysProblems {
 
         Arrays.sort(nums1);
     }
+
+//    Given an array nums and a value val, remove all instances of that value in-place and return the new length.
+//
+//    Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+//
+//    The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+//    Example 1:
+//
+//    Input: nums = [3,2,2,3], val = 3
+//    Output: 2, nums = [2,2]
+//    Explanation: Your function should return length = 2, with the first two elements of nums being 2.
+//    It doesn't matter what you leave beyond the returned length. For example if you return 2 with nums = [2,2,3,3]
+//    or nums = [2,3,0,0], your answer will be accepted.
+    public int removeElement(int[] nums, int val) {
+        int numOfDel = 0;
+        int index = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i]==val) {
+                nums[i] = -1;
+            }
+        }
+
+        for (int i = 0; i <nums.length ; i++) {
+            if (nums[i] == -1) {
+                numOfDel++;
+            }
+
+            if (nums[i] != -1) {
+                nums[index] = nums[i];
+                index++;
+            }
+        }
+
+        return nums.length-numOfDel;
+    }
+
+//    Given a sorted array nums, remove the duplicates in-place such that each element appears only once and returns
+//    the new length.
+//
+//    Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1)
+//    extra memory.
+//
+//    Example 1:
+//
+//    Input: nums = [1,1,2]
+//    Output: 2, nums = [1,2]
+//    Explanation: Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively.
+//    It doesn't matter what you leave beyond the returned length.
+    public int removeDuplicates(int[] nums) {
+        int uniqueNum = 0;
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != nums[uniqueNum]) {
+                uniqueNum++;
+                nums[uniqueNum] = nums[i];
+            }
+        }
+        return uniqueNum+1;
+    }
+
+//    Given an array arr of integers, check if there exists two integers N and M such that N is the double of M ( i.e. N = 2 * M).
+//
+//    More formally check if there exists two indices i and j such that :
+//
+//    i != j
+//    0 <= i, j < arr.length
+//    arr[i] == 2 * arr[j]
+    public boolean checkIfExist(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i+1; j < arr.length; j++) {
+                if (arr[j] == 2 * arr[i] || 2 * arr[j] == arr[i]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+//    Given an array of integers arr, return true if and only if it is a valid mountain array.
+//
+//    Recall that arr is a mountain array if and only if:
+//
+//    arr.length >= 3
+//    There exists some i with 0 < i < arr.length - 1 such that:
+//    arr[0] < arr[1] < ... < arr[i - 1] < A[i]
+//    arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+
+    public boolean validMountainArray(int[] arr) {
+        int max = 0;
+        int index = 0;
+        if (arr.length < 3) {
+            return false;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+                index = i;
+            }
+        }
+        if (index == arr.length - 1 || index == 0) {
+            return false;
+        }
+        for (int i = 0; i < index; i++) {
+            if (arr[i] >= arr[i+1]) {
+                return false;
+            }
+        }
+        for (int i = index; i < arr.length-1; i++) {
+            if (arr[i] <= arr[i+1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+//    Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
+//
+//    Return the running sum of nums.
+//    Input: nums = [1,2,3,4]
+//    Output: [1,3,6,10]
+//    Explanation: Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].
+    public int[] runningSum(int[] nums) {
+        int[] nums2 = new int[nums.length];
+        int sum = 0;
+        for (int i = 0; i <nums2.length ; i++) {
+            sum += nums[i];
+            nums2[i] = sum;
+        }
+        return nums2;
+    }
+
 }
