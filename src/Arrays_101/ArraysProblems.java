@@ -9,9 +9,12 @@ import java.util.List;
 public class ArraysProblems {
     @Test
     public void test() {
-        int[] a = new int[]{0,1,2,2,3,0,4,2};
-        int i = removeElement(a, 2);
-        System.out.println(i);
+        int[] a = {4,3,2,7,8,2,3,1};
+        List<Integer> disappearedNumbers = findDisappearedNumbers(a);
+        for (int i :disappearedNumbers
+             ) {
+            System.out.print(i+" ");
+        }
 
     }
 
@@ -112,7 +115,7 @@ public class ArraysProblems {
 //            -10000 <= A[i] <= 10000
 //    A is sorted in non-decreasing order.
 
-    public int[] sortedSquares(int[] A) {
+    public int[] sortedSquares1(int[] A) {
         int[] B = new int[A.length];
         for (int i = 0; i < A.length; i++) {
             B[i] = A[i] * A[i];
@@ -143,7 +146,7 @@ public class ArraysProblems {
     public void duplicateZeros(int[] arr) {
         int dups = 0;
         int length_ = arr.length - 1;
-        
+
         //find 0s needed to duplicate
         for (int left = 0; left <= length_-dups; left++) {
             if (arr[left] == 0) {
@@ -156,7 +159,7 @@ public class ArraysProblems {
                 dups++;
             }
         }
-        
+
         //assign values from the right to the left
         int last = length_ - dups;
         for (int i = last; i >=0 ; i--) {
@@ -333,4 +336,183 @@ public class ArraysProblems {
         return nums2;
     }
 
+//    Given an array arr, replace every element in that array with the greatest element among the elements to its right, and replace the last element with -1.
+//
+//    After doing so, return the array.
+//    Answer from Leetcode,from right to the left. This one runs faster than which is from left to right.
+//    public int[] replaceElements(int[] arr) {
+//        int max = -1;
+//        for(int j = arr.length - 1; j >= 0; j--) {
+//            int tmp = arr[j];
+//            arr[j] = max;
+//            max = Math.max(max, tmp);
+//        }
+//
+//        return arr;
+//    }
+    public int[] replaceElements(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            int max = 0;
+            for (int j = i+1; j < arr.length; j++) {
+                if (arr[j]>= max) {
+                    max = arr[j];
+                }
+            }
+            arr[i] = max;
+        }
+        arr[arr.length - 1] = -1;
+
+        return arr;
+    }
+
+//    Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+//
+//    Example:
+//
+//    Input: [0,1,0,3,12]
+//    Output: [1,3,12,0,0]
+    public void moveZeroes(int[] nums) {
+        int j = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[j] = nums[i];
+                j++;
+            }
+        }
+
+        for (int i = j; i < nums.length; i++) {
+            nums[i] = 0;
+        }
+    }
+
+//    Given an array A of non-negative integers, return an array consisting of all the even elements of A, followed by all the odd elements of A.
+//
+//    You may return any answer array that satisfies this condition.
+//
+//
+//
+//            Example 1:
+//
+//    Input: [3,1,2,4]
+//    Output: [2,4,3,1]
+//    The outputs [4,2,3,1], [2,4,1,3], and [4,2,1,3] would also be accepted.
+    public int[] sortArrayByParity(int[] A) {
+        int j = 0;
+        for (int i = 0; i < A.length; i++) {
+            if (A[i] % 2 == 0) {
+                int temp = A[j];
+                A[j] = A[i];
+                A[i] = temp;
+                j++;
+            }
+        }
+        return A;
+    }
+
+//    Students are asked to stand in non-decreasing order of heights for an annual photo.
+//
+//    Return the minimum number of students that must move in order for all students to be standing in non-decreasing order of height.
+//
+//    Notice that when a group of students is selected they can reorder in any possible way between themselves and the non selected students remain on their seats.
+//
+//
+//
+//            Example 1:
+//
+//    Input: heights = [1,1,4,2,1,3]
+//    Output: 3
+//    Explanation:
+//    Current array : [1,1,4,2,1,3]
+//    Target array  : [1,1,1,2,3,4]
+//    On index 2 (0-based) we have 4 vs 1 so we have to move this student.
+//    On index 4 (0-based) we have 1 vs 3 so we have to move this student.
+//    On index 5 (0-based) we have 3 vs 4 so we have to move this student.
+    public int heightChecker(int[] heights) {
+        int count = 0;
+        int[] copy = new int[heights.length];
+        for (int i = 0; i <copy.length ; i++) {
+            copy[i] = heights[i];
+        }
+
+        Arrays.sort(heights);
+
+        for (int i = 0; i <heights.length ; i++) {
+            if (copy[i] != heights[i]) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+//    Given a non-empty array of integers, return the third maximum number in this array. If it does not exist, return the maximum number. The time complexity must be in O(n).
+//
+//    Example 1:
+//    Input: [3, 2, 1]
+//    Output: 1
+//
+//    Explanation: The third maximum is 1.
+//    Example 2:
+//    Input: [1, 2]
+//
+//    Output: 2
+//
+//    Explanation: The third maximum does not exist, so the maximum (2) is returned instead.
+//
+//    Example 3:
+//    Input: [2, 2, 3, 1]
+//    Output: 1
+//
+//    Explanation: Note that the third maximum here means the third maximum distinct number.
+//    Both numbers with value 2 are both considered as second maximum.
+    public int thirdMax(int[] nums) {
+        int j = 0;
+        Arrays.sort(nums);
+        if (nums.length < 3) {
+            return nums[nums.length - 1];
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != nums[j]) {
+                j++;
+                nums[j] = nums[i];
+            }
+        }
+
+        if (j < 2) {
+            return nums[j];
+        }
+        return nums[j - 2];
+    }
+
+//    Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+//
+//    Find all the elements of [1, n] inclusive that do not appear in this array.
+//
+//    Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+//
+//    Example:
+//
+//    Input:
+//            [4,3,2,7,8,2,3,1]
+//
+//    Output:
+//            [5,6]
+
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> ints = new ArrayList<>();
+        for (int i = 0; i < nums.length ; i++) {
+            int j = Math.abs(nums[i]) - 1;
+            if (nums[j] > 0) {
+                nums[j] = -nums[j];
+            }
+        }
+
+        for (int i = 0; i <nums.length ; i++) {
+            if (nums[i] > 0) {
+                ints.add(i + 1);
+            }
+        }
+        return ints;
+    }
 }
